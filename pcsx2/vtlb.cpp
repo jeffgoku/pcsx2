@@ -376,6 +376,11 @@ static __ri void vtlb_Miss(u32 addr,u32 mode)
 			cpuTlbMissW(addr, cpuRegs.branch);
 		else
 			cpuTlbMissR(addr, cpuRegs.branch);
+
+		// Exception handled. Current instruction need to be stopped
+		if (cpuRegs.pc == 0x80000000) {
+			throw Exception::ExitCpuExecute();
+		}
 	}
 
 	// The exception terminate the program on linux which is very annoying
